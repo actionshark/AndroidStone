@@ -9,4 +9,25 @@ public class ThreadParams {
 	
 	public long repeatTimes = 1;
 	public boolean fixedInterval = true;
+	
+	public ThreadParams() {
+	}
+	
+	public ThreadParams(boolean inMainThread, Runnable runnable) {
+		this.inMainThread = inMainThread;
+		this.runnable = runnable;
+	}
+	
+	public ThreadParams(boolean inMainThread, Runnable runnable, long firstDelay) {
+		this.inMainThread = inMainThread;
+		this.runnable = runnable;
+		this.firstDelay = firstDelay;
+	}
+	
+	public ThreadParams(boolean inMainThread, Runnable runnable, long firstDelay, long repeatDelay) {
+		this.inMainThread = inMainThread;
+		this.runnable = runnable;
+		this.firstDelay = firstDelay;
+		this.repeatDelay = repeatDelay;
+	}
 }
