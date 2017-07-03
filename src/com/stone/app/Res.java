@@ -69,6 +69,14 @@ public class Res {
 		return getResId("drawable", name);
 	}
 	
+	public int getRawId(String name) {
+		return getResId("raw", name);
+	}
+	
+	public int getIdId(String name) {
+		return getResId("id", name);
+	}
+	
 	public int getPixcel(float dp) {
 		return (int) (dp * mDensity);
 	}
