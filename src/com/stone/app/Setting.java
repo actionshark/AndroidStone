@@ -5,6 +5,18 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 public class Setting {
+	private static Setting sInstance;
+	
+	public static synchronized void setInstance(String name) {
+		sInstance = new Setting(App.getInstance().getContext(), name);
+	}
+	
+	public static synchronized Setting getInstance() {
+		return sInstance;
+	}
+	
+	///////////////////////////////////////////////////////////
+	
 	private final SharedPreferences mPreferences;
 	
 	public Setting(Context context, String name) {
