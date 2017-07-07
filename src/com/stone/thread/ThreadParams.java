@@ -29,5 +29,6 @@ public class ThreadParams {
 		this.runnable = runnable;
 		this.firstDelay = firstDelay;
 		this.repeatDelay = repeatDelay;
+		this.repeatTimes = -1;
 	}
 }
