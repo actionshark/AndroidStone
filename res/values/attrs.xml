@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="stone">
+		<attr
+			name="round_width"
+			format="dimension" />
+		<attr
+			name="round_height"
+			format="dimension" />
+		<attr
+			name="color"
+			format="color" />
+		<attr
+			name="color_pressed"
+			format="color" />
+	</declare-styleable>
+</resources>
