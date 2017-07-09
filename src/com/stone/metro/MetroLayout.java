@@ -38,15 +38,15 @@ public class MetroLayout extends LinearLayout {
 	protected void init(Context context, AttributeSet attrs) {
 		mPaint.setAntiAlias(true);
 		
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.stone);
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.stone);
 		
-		mRoundWidth = a.getDimension(R.styleable.stone_round_width, mRoundWidth);
-		mRoundHeight = a.getDimension(R.styleable.stone_round_height, mRoundHeight);
+		mRoundWidth = ta.getDimension(R.styleable.stone_round_width, mRoundWidth);
+		mRoundHeight = ta.getDimension(R.styleable.stone_round_height, mRoundHeight);
 		
-		mColor = a.getColor(R.styleable.stone_color, mColor);
-		mColorPressed = a.getColor(R.styleable.stone_color_pressed, mColor);
+		mColor = ta.getColor(R.styleable.stone_color, mColor);
+		mColorPressed = ta.getColor(R.styleable.stone_color_pressed, mColor);
 		
-		a.recycle();
+		ta.recycle();
 		
 		setWillNotDraw(false);
 	}
@@ -61,19 +61,23 @@ public class MetroLayout extends LinearLayout {
 	public void setColor(int color) {
 		mColor = color;
 		
-		postInvalidate();
+		if (mIsPressed == false) {
+			postInvalidate();
+		}
 	}
 	
 	public void setColorPressed(int color) {
 		mColorPressed = color;
 		
-		postInvalidate();
+		if (mIsPressed) {
+			postInvalidate();
+		}
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		mBounds.set(mRoundWidth, getHeight() - mRoundHeight,
-			getWidth() - mRoundWidth, mRoundHeight);
+		mBounds.set(mRoundWidth, mRoundHeight,
+			getWidth() - mRoundWidth, getHeight() - mRoundHeight);
 		mPaint.setColor(mIsPressed ? mColorPressed : mColor);
 		canvas.drawRoundRect(mBounds, mRoundWidth, mRoundHeight, mPaint);
 		
