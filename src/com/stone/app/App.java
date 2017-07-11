@@ -22,7 +22,7 @@ public class App {
 	}
 	
 	public void onApplicationCreate(Context context) {
-		mContext = context.getApplicationContext();
+		mContext = context;
 	}
 	
 	public Context getContext() {
