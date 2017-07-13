@@ -3,30 +3,31 @@ package com.as.thread;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.as.log.Logger;
+import com.as.log.LogCat;
+import com.js.log.Level;
+import com.js.log.Logger;
+import com.js.thread.ThreadHandler;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 
 public class ThreadUtil {
-	public static final String TAG = "ThreadUtil";
+	public static final String TAG = ThreadUtil.class.getSimpleName();
 	
 	private static Handler sMainService;
 	
-	private static ExecutorService sNewService;
-	
 	static {
 		sMainService = new Handler(Looper.getMainLooper());
-		
-		sNewService = Executors.newCachedThreadPool();
 	}
 	
 	public static boolean isMainThread() {
 	    return Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId();
 	}
 	
-	public static ThreadHandler run(final ThreadParams params) {
+	public static ThreadHandler run(final Runnable runnable, final long firstDelay,
+			final long repeatDelay, final int repeatTimes, final boolean fixedInterval) {
+		
 		final ThreadHandler handler = new ThreadHandler();
 		handler.setStatus(ThreadHandler.Status.Running);
 		
@@ -107,19 +108,19 @@ public class ThreadUtil {
 		return handler;
 	}
 	
-	private static void callRunnable(ThreadParams params) {
+	private static void callRunnable(Runnable runnable) {
 		try {
-			params.runnable.run();
+			runnable.run();
 		} catch (Exception e) {
-			Logger.print(TAG, e);
+			Logger.getInstance().print(TAG, Level.E, e);
 		}
 	}
 	
-	private static boolean countTimes(ThreadParams params) {
-		if (params.repeatTimes == 0 || params.repeatTimes == 1) {
+	private static boolean countTimes(int repeatTimes) {
+		if (repeatTimes == 0 || repeatTimes == 1) {
 			return false;
 		} else {
-			params.repeatTimes--;
+			repeatTimes--;
 			return true;
 		}
 	}
