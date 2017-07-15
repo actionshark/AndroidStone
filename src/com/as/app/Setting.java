@@ -8,7 +8,7 @@ public class Setting {
 	private static Setting sInstance;
 	
 	public static synchronized void setInstance(String name) {
-		sInstance = new Setting(App.getInstance().getContext(), name);
+		sInstance = new Setting(App.getContext(), name);
 	}
 	
 	public static synchronized Setting getInstance() {

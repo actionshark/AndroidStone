@@ -17,7 +17,7 @@ import android.net.wifi.WifiManager;
 
 public class NetworkUtil {
 	public static String getIPAddress() {
-		Context context = App.getInstance().getContext();
+		Context context = App.getContext();
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
 			Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();

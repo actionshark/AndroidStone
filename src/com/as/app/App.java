@@ -11,52 +11,42 @@ import android.os.Handler;
 import android.os.Looper;
 
 public class App {
-	private static App sInstance = null;
+	private static Context sContext;
 	
-	public static synchronized App getInstance() {
-		if (sInstance == null) {
-			sInstance = new App();
+	private static Handler sHandler;
+	
+	public static void onApplicationCreate(Context context) {
+		if (sContext != null) {
+			return;
 		}
 		
-		return sInstance;
-	}
-	
-	//////////////////////////////////////////////////////////////////////////
-	
-	private Context mContext;
-	
-	private final Handler mHandler;
-	
-	private App() {
-		mHandler = new Handler(Looper.getMainLooper());
-	}
-	
-	public void onApplicationCreate(Context context) {
-		mContext = context;
+		sContext = context;
+		
+		sHandler = new Handler(Looper.getMainLooper());
 		
 		Logger.setInstance(new LogCat());
 		
 		ThreadUtil.setMain(new IExecutor() {
 			@Override
 			public void run(Runnable runnable, long delay) {
-				mHandler.postDelayed(runnable, delay);
+				sHandler.postDelayed(runnable, delay);
 			}
 		});
 	}
 	
-	public Context getContext() {
-		return mContext;
+	public static Context getContext() {
+		return sContext;
 	}
 	
-	public Resources getResources() {
-		return mContext.getResources();
+	public static Resources getResources() {
+		return sContext.getResources();
 	}
 	
-	public String getPackageName() {
-		return mContext.getPackageName();
+	public static String getPackageName() {
+		return sContext.getPackageName();
 	}
 
-	public void exitApp() {
+	public static void exitApp() {
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 }
