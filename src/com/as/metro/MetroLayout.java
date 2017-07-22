@@ -17,8 +17,8 @@ public class MetroLayout extends LinearLayout {
 	
 	protected final RectF mBounds = new RectF();
 	
-	protected float mRoundWidth = 10f;
-	protected float mRoundHeight = 10f;
+	protected int mRoundWidth = 10;
+	protected int mRoundHeight = 10;
 	
 	protected int mColor = 0xff000000;
 	protected int mColorPressed = mColor;
@@ -40,8 +40,9 @@ public class MetroLayout extends LinearLayout {
 		
 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.stone);
 		
-		mRoundWidth = ta.getDimension(R.styleable.stone_round_width, mRoundWidth);
-		mRoundHeight = ta.getDimension(R.styleable.stone_round_height, mRoundHeight);
+		int rw = ta.getDimensionPixelSize(R.styleable.stone_round_width, mRoundWidth);
+		int rh = ta.getDimensionPixelSize(R.styleable.stone_round_height, mRoundHeight);
+		setRoundSize(rw, rh);
 		
 		mColor = ta.getColor(R.styleable.stone_color, mColor);
 		mColorPressed = ta.getColor(R.styleable.stone_color_pressed, mColor);
@@ -51,9 +52,11 @@ public class MetroLayout extends LinearLayout {
 		setWillNotDraw(false);
 	}
 	
-	public void setRoundSize(float width, float height) {
+	public void setRoundSize(int width, int height) {
 		mRoundWidth = width;
 		mRoundHeight = height;
+		
+		setPadding(mRoundWidth, mRoundHeight, mRoundWidth, mRoundHeight);
 		
 		postInvalidate();
 	}
