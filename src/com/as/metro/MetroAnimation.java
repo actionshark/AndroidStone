@@ -5,20 +5,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.ScaleAnimation;
 
 public class MetroAnimation {
+	public static interface IAnimationListener {
+		public void onFinish();
+	}
+	
+	protected IAnimationListener mListener;
+	
 	protected long mDuration = 200l;
 	
 	public void setDuration(long duration) {
 		mDuration = duration;
 	}
 	
-	public void runStarting(ViewGroup root) {
-		runStarting(root, new AtomicInteger(1));
+	public void setListener(IAnimationListener listener) {
+		mListener = listener;
 	}
 	
-	protected void runStarting(ViewGroup root, AtomicInteger index) {
+	public void runStarting(ViewGroup root) {
+		runStarting(root, new AtomicInteger(0));
+	}
+	
+	protected void runStarting(ViewGroup root, final AtomicInteger index) {
 		int count = root.getChildCount();
 		
 		for (int i = 0; i < count; i++) {
@@ -28,9 +39,27 @@ public class MetroAnimation {
 			}
 			
 			if (child instanceof MetroLayout) {
+				final int idx = index.incrementAndGet();
+				
 				Animation anim = createAnimation();
 				anim.setDuration(mDuration);
-				anim.setStartOffset(mDuration * index.getAndIncrement());
+				anim.setStartOffset(mDuration * idx);
+				anim.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						if (index.get() == idx && mListener != null) {
+							mListener.onFinish();
+						}
+					}
+				});
 				
 				child.startAnimation(anim);			}
 			
