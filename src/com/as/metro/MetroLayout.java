@@ -13,15 +13,14 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
 public class MetroLayout extends LinearLayout {
+	protected final RectF mRect = new RectF();
+	protected float mRoundX = 10;
+	protected float mRoundY = 10;
+	
 	protected final Paint mPaint = new Paint();
-	
-	protected final RectF mBounds = new RectF();
-	
-	protected int mRoundWidth = 10;
-	protected int mRoundHeight = 10;
-	
 	protected int mColor = 0xff000000;
 	protected int mColorPressed = mColor;
+	protected boolean mColorHasSet = false;
 	
 	protected boolean mIsPressed = false;
 
@@ -36,33 +35,37 @@ public class MetroLayout extends LinearLayout {
 	}
 
 	protected void init(Context context, AttributeSet attrs) {
-		mPaint.setAntiAlias(true);
-		
 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.stone);
 		
-		int rw = ta.getDimensionPixelSize(R.styleable.stone_round_width, mRoundWidth);
-		int rh = ta.getDimensionPixelSize(R.styleable.stone_round_height, mRoundHeight);
-		setRoundSize(rw, rh);
+		float rx = ta.getDimension(R.styleable.stone_round_x, mRoundX);
+		float ry = ta.getDimension(R.styleable.stone_round_y, mRoundY);
+		setRoundSize(rx, ry);
 		
 		mColor = ta.getColor(R.styleable.stone_color, mColor);
 		mColorPressed = ta.getColor(R.styleable.stone_color_pressed, mColor);
+		if (ta.hasValue(R.styleable.stone_color)) {
+			mColorHasSet = true;
+		}
 		
 		ta.recycle();
+		
+		mPaint.setAntiAlias(true);
 		
 		setWillNotDraw(false);
 	}
 	
-	public void setRoundSize(int width, int height) {
-		mRoundWidth = width;
-		mRoundHeight = height;
+	public void setRoundSize(float rx, float ry) {
+		mRoundX = rx;
+		mRoundY = ry;
 		
-		setPadding(mRoundWidth, mRoundHeight, mRoundWidth, mRoundHeight);
+		setPadding((int)rx, (int)ry, (int)rx, (int)ry);
 		
 		postInvalidate();
 	}
 	
 	public void setColor(int color) {
 		mColor = color;
+		mColorHasSet = true;
 		
 		if (mIsPressed == false) {
 			postInvalidate();
@@ -76,13 +79,20 @@ public class MetroLayout extends LinearLayout {
 			postInvalidate();
 		}
 	}
+	
+	public boolean hasColorSet() {
+		return mColorHasSet;
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		mBounds.set(mRoundWidth, mRoundHeight,
-			getWidth() - mRoundWidth, getHeight() - mRoundHeight);
+		mRect.set(getPaddingLeft(), getPaddingTop(),
+				getWidth() - getPaddingRight(),
+				getHeight() - getPaddingBottom());
+		
 		mPaint.setColor(mIsPressed ? mColorPressed : mColor);
-		canvas.drawRoundRect(mBounds, mRoundWidth, mRoundHeight, mPaint);
+		
+		canvas.drawRoundRect(mRect, mRoundX, mRoundY, mPaint);
 		
 		super.onDraw(canvas);
 	}

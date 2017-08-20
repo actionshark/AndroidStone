@@ -2,10 +2,10 @@
 <resources>
 	<declare-styleable name="stone">
 		<attr
-			name="round_width"
+			name="round_x"
 			format="dimension" />
 		<attr
-			name="round_height"
+			name="round_y"
 			format="dimension" />
 		<attr
 			name="color"

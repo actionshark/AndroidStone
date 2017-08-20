@@ -10,6 +10,7 @@ import android.view.animation.ScaleAnimation;
 
 public class MetroAnimation {
 	public static interface IAnimationListener {
+		public void onStartOne(MetroLayout ml);
 		public void onFinish();
 	}
 	
@@ -61,7 +62,12 @@ public class MetroAnimation {
 					}
 				});
 				
-				child.startAnimation(anim);			}
+				if (mListener != null) {
+					mListener.onStartOne((MetroLayout) child);
+				}
+				
+				child.startAnimation(anim);
+			}
 			
 			runStarting((ViewGroup) child, index);
 		}
