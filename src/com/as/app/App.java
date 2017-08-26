@@ -91,6 +91,7 @@ public class App {
 	}
 
 	public static void exitApp() {
+		android.os.Process.killProcess(android.os.Process.myPid());
 		System.exit(0);
 	}
 }
